@@ -5,3 +5,5 @@ bs4~=0.0.1
 beautifulsoup4~=4.11.1
 aiohttp~=3.8.1
 aioflask~=0.4.0
+openpyxl~=3.0.10
+urllib3~=1.26.12

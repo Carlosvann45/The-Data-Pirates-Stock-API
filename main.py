@@ -2,9 +2,29 @@ from flask import *
 import datetime
 import asyncio
 import aiohttp
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, SoupStrainer
+from openpyxl import load_workbook
+from urllib3.connectionpool import xrange
 
 app = Flask(__name__)
+tickers_workbook = load_workbook('YahooTickerSymbols.xlsx')
+stock_sheet = tickers_workbook['Stock']
+
+
+@app.route('/stock/tickers/all', methods=['GET'])
+def get_all_stocks():
+    column1 = stock_sheet['A']
+    column2 = stock_sheet['B']
+    symbol_objects = []
+
+    for x in xrange(len(column1)):
+        if column1[x].value and column1[x].value != 'Yahoo Stock Tickers' and column1[x].value != 'Ticker':
+            symbol_objects.append({
+                'Name': column2[x].value,
+                'Symbol': column1[x].value
+            })
+
+    return jsonify(symbol_objects), 200
 
 
 @app.route('/stock/data/quote', methods=['GET'])
@@ -14,7 +34,6 @@ def get_stock_prices():
     if symbols == '':
         return jsonify(create_error_message(400, 'At least one symbol is required.')), 400
 
-    quote_array = []
     symbols = symbols.split(',')
 
     try:
@@ -52,7 +71,6 @@ async def get_symbols(symbols):
         i = 0
 
         for html in data:
-
             soup = BeautifulSoup(html, 'html.parser')
 
             try:
