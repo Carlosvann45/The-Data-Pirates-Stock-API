@@ -18,7 +18,7 @@ def get_all_stocks():
     symbol_objects = []
 
     for x in xrange(len(column1)):
-        if column1[x].value and column1[x].value != 'Yahoo Stock Tickers' and column1[x].value != 'Ticker':
+        if column1[x].value and column2[x].value and column1[x].value != 'Yahoo Stock Tickers' and column1[x].value != 'Ticker':
             symbol_objects.append({
                 'Name': column2[x].value,
                 'Symbol': column1[x].value
