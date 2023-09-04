@@ -100,4 +100,4 @@ def create_error_message(error_code, error_message):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='172.19.32.1', port=5000)
